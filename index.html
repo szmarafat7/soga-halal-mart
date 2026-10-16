@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soga Halal Mart – Premium Halal Online Grocery in Chiba, Japan</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <meta name="description" content="Order premium Halal meat, spices, rice, dairy and daily essentials online. Free delivery over ¥8,500 across Japan. Based in Chiba.">
+  <meta name="theme-color" content="#15803d">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            accent: '#f59e0b',
+            price:  '#dc2626',
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0,0,0,0.06)',
+            'card': '0 8px 30px -4px rgba(0,0,0,0.08)',
+            'float': '0 20px 40px -8px rgba(0,0,0,0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -8px rgba(0,0,0,0.12); }
+
+    .blank-img {
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #64748b; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em;
+    }
+
+    .img-meat   { background: linear-gradient(135deg, #fecaca 0%, #f87171 100%); color: #991b1b; }
+    .img-spice  { background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%); color: #92400e; }
+    .img-drink  { background: linear-gradient(135deg, #a5f3fc 0%, #22d3ee 100%); color: #0e7490; }
+    .img-snack  { background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); color: #9d174d; }
+    .img-veg    { background: linear-gradient(135deg, #bbf7d0 0%, #4ade80 100%); color: #166534; }
+    .img-dairy  { background: linear-gradient(135deg, #e0e7ff 0%, #818cf8 100%); color: #3730a3; }
+    .img-sweet  { background: linear-gradient(135deg, #fce7f3 0%, #f9a8d4 100%); color: #9d174d; }
+    .img-cook   { background: linear-gradient(135deg, #fed7aa 0%, #fb923c 100%); color: #9a3412; }
+    .img-other  { background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%); color: #334155; }
+
+    /* Cart slide-in */
+    .cart-panel {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cart-panel.open { transform: translateX(0); }
+
+    /* Modal */
+    .modal-backdrop {
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.25s ease;
+    }
+    .modal-backdrop.open .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Badge pulse */
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+    /* Smooth accordion */
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .submenu.open { max-height: 500px; }
+
+    /* Floating buttons */
+    .float-btn {
+      transition: all 0.25s ease;
+    }
+    .float-btn:hover { transform: scale(1.08); }
+
+    /* Toast */
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s ease;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Opening brand animation */
+    .site-intro {
+      position: fixed; inset: 0; z-index: 100;
+      display: grid; place-items: center;
+      background: radial-gradient(circle at 50% 42%, #1f9d55 0%, #14532d 48%, #0c2f1b 100%);
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+    .site-intro.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .intro-content { text-align: center; color: white; animation: intro-rise 0.8s cubic-bezier(.16,1,.3,1) both; }
+    .intro-logo-wrap {
+      width: 132px; height: 132px; margin: 0 auto 1.25rem; padding: 9px;
+      background: white; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 0 0 16px rgba(245,158,11,.12), 0 20px 50px rgba(0,0,0,.25);
+      animation: intro-logo 1.45s cubic-bezier(.16,1,.3,1) both;
+    }
+    .intro-logo-wrap img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+    .intro-tagline { color: #fef3c7; font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    @keyframes intro-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes intro-logo { 0% { opacity: 0; transform: scale(.45); } 60% { opacity: 1; transform: scale(1.07); } 100% { opacity: 1; transform: scale(1); } }
+
+    /* The category panel must stay in normal document flow on phones. */
+    @media (max-width: 1023px) {
+      #sidebarAside:not(.hidden) {
+        position: static;
+        width: 100%;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .site-intro, .intro-content, .intro-logo-wrap { animation: none; transition: none; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col">
+
+  <!-- ========== OPENING BRAND ANIMATION ========== -->
+  <div id="siteIntro" class="site-intro" role="status" aria-label="Loading Soga Halal Mart">
+    <div class="intro-content">
+      <div class="intro-logo-wrap"><img src="logo.JPG" alt="Soga Halal Mart logo"></div>
+      <div class="text-xl font-black tracking-wide">SOGA HALAL MART</div>
+      <div class="intro-tagline mt-2">Your trusted Halal grocery</div>
+    </div>
+  </div>
+
+  <!-- ========== TOP ANNOUNCEMENT BAR ========== -->
+  <div class="bg-gradient-to-r from-red-600 via-amber-500 to-emerald-600 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center">
+      <div class="flex items-center gap-2">
+        <span class="bg-white text-red-600 px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase animate-pulse-soft shrink-0" data-i18n="freeDeliveryTag">Free Delivery</span>
+        <span data-i18n="freeDeliveryText">Orders ¥8,500+ free delivery all over Japan!</span>
+      </div>
+
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-1.5 bg-black/25 backdrop-blur-sm px-2.5 py-1 rounded-lg text-xs font-bold">
+        <span class="text-white/80 mr-1"><i class="fa-solid fa-globe"></i></span>
+        <button onclick="setLanguage('en')" class="px-2.5 py-1 rounded-md hover:bg-white/20 transition lang-btn" id="btn-en">EN</button>
+        <button onclick="setLanguage('ja')" class="px-2.5 py-1 rounded-md hover:bg-white/20 transition lang-btn" id="btn-ja">日本語</button>
+        <button onclick="setLanguage('bn')" class="px-2.5 py-1 rounded-md hover:bg-white/20 transition lang-btn" id="btn-bn">বাংলা</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN HEADER ========== -->
+  <header class="bg-white border-b border-slate-200 sticky top-[41px] z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3 md:gap-6">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 shrink-0 group" onclick="filterCategory('all')">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-md ring-1 ring-brand-100 transition group-hover:ring-brand-300">
+          <img src="logo.JPG" alt="Soga Halal Mart" class="w-full h-full object-contain p-0.5">
+        </div>
+        <div class="hidden sm:block">
+          <div class="text-lg md:text-xl font-black text-brand-800 tracking-tight leading-none group-hover:text-brand-700 transition">SOGA HALAL MART</div>
+          <div class="text-[10px] sm:text-[11px] font-bold text-red-600 tracking-wider uppercase mt-0.5" data-i18n="logoSub">Japan's Trusted Online Grocery</div>
+        </div>
+      </a>
+
+      <!-- Desktop Search -->
+      <div class="flex-1 max-w-xl hidden md:block">
+        <div class="relative flex items-center">
+          <input type="text" id="searchInput" onkeyup="filterProducts()"
+                 placeholder="Search products..." data-i18n-placeholder="searchPlaceholder"
+                 class="w-full pl-4 pr-28 py-2.5 rounded-full border-2 border-brand-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-100 outline-none transition text-sm">
+          <button onclick="filterProducts()"
+                  class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-1.5 rounded-full text-sm font-semibold transition flex items-center gap-1.5"
+                  data-i18n="searchBtn">
+            <i class="fa-solid fa-magnifying-glass text-xs"></i> Search
+          </button>
+        </div>
+      </div>
+
+      <!-- Header Right Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Support Phone (desktop) -->
+        <div class="hidden lg:flex flex-col text-right pr-3 border-r border-slate-200">
+          <span class="text-slate-400 text-[11px]" data-i18n="supportLabel">Direct Support</span>
+          <a href="tel:09099756585" class="font-bold text-slate-800 hover:text-brand-700 transition text-sm">
+            <i class="fa-solid fa-phone text-brand-600 mr-1"></i>090-9975-6585
+          </a>
+        </div>
+
+        <!-- WhatsApp Order (desktop) -->
+        <a href="https://wa.me/819099756585" target="_blank"
+           class="hidden sm:flex bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl font-bold text-sm items-center gap-2 shadow-sm transition">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span data-i18n="whatsappBtn">WhatsApp Order</span>
+        </a>
+
+        <!-- Cart Button -->
+        <button onclick="toggleCart()" class="relative bg-slate-100 hover:bg-slate-200 text-slate-800 p-2.5 rounded-xl transition" aria-label="Open cart">
+          <i class="fa-solid fa-cart-shopping text-lg"></i>
+          <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Search -->
+    <div class="px-4 pb-3 pt-1 md:hidden border-t border-slate-100">
+      <div class="relative flex items-center">
+        <input type="text" id="searchInputMobile" onkeyup="filterProductsMobile()"
+               placeholder="Search products..." data-i18n-placeholder="searchPlaceholder"
+               class="w-full pl-4 pr-24 py-2.5 rounded-full border border-slate-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none text-sm">
+        <button onclick="filterProductsMobile()"
+                class="absolute right-1.5 top-1/2 -translate-y-1/2 bg-brand-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold"
+                data-i18n="searchBtn">Search</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== NAVIGATION BAR ========== -->
+  <nav class="bg-brand-800 text-white shadow-md relative z-30">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-sm font-semibold">
+      <!-- All Categories -->
+      <button id="toggleCategoriesBtn" onclick="toggleSidebarMenu()"
+              class="bg-brand-700 hover:bg-brand-600 text-white px-4 py-3 flex items-center gap-2 font-bold tracking-wide transition">
+        <i class="fa-solid fa-bars-staggered"></i>
+        <span data-i18n="allCategories">ALL CATEGORIES</span>
+        <i class="fa-solid fa-chevron-down text-[10px] ml-1 transition-transform" id="navCategoryArrow"></i>
+      </button>
+
+      <!-- Horizontal Links -->
+      <div class="flex items-center gap-5 overflow-x-auto py-3 no-scrollbar text-slate-200">
+        <a href="#" onclick="filterCategory('all')" class="hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+          <i class="fa-solid fa-house text-xs"></i>
+          <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="#store-location" class="hover:text-white transition flex items-center gap-1.5 whitespace-nowrap">
+          <i class="fa-solid fa-location-dot text-xs"></i>
+          <span data-i18n="navLocation">Store Location</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="relative bg-gradient-to-br from-brand-800 via-brand-700 to-emerald-600 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-20 w-80 h-80 bg-amber-300 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 py-12 md:py-16 relative z-10 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium mb-4">
+          <i class="fa-solid fa-shield-halved text-amber-300"></i>
+          <span data-i18n="heroBadge">100% Halal Certified • Cold Chain Delivery</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-4" data-i18n="heroTitle">
+          Premium Halal Groceries<br class="hidden sm:block"> Delivered to Your Door
+        </h1>
+        <p class="text-brand-100 text-base md:text-lg max-w-xl mb-6" data-i18n="heroDesc">
+          Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy free delivery across Japan on orders over ¥8,500.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+          <button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})"
+                  class="bg-white text-brand-800 hover:bg-brand-50 font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span data-i18n="heroCta">Shop Now</span>
+          </button>
+          <a href="https://wa.me/819099756585" target="_blank"
+             class="bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            <span data-i18n="whatsappBtn">WhatsApp Order</span>
+          </a>
+        </div>
+      </div>
+      <div class="hidden md:flex flex-col gap-3 text-sm">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-truck-fast"></i></div>
+          <div>
+            <div class="font-bold" data-i18n="feature1Title">Nationwide Delivery</div>
+            <div class="text-brand-100 text-xs" data-i18n="feature1Desc">Cold-chain shipping</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-leaf"></i></div>
+          <div>
+            <div class="font-bold" data-i18n="feature2Title">Farm-Fresh Quality</div>
+            <div class="text-brand-100 text-xs" data-i18n="feature2Desc">Premium Halal ingredients</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-headset"></i></div>
+          <div>
+            <div class="font-bold" data-i18n="feature3Title">Direct Support</div>
+            <div class="text-brand-100 text-xs" data-i18n="feature3Desc">WhatsApp & Phone</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <div id="catalog" class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-6 relative">
+
+    <!-- SIDEBAR CATEGORIES -->
+    <aside id="sidebarAside" class="hidden lg:block bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden h-fit lg:sticky top-[130px] transition-all duration-300" aria-label="Product categories">
+      <div class="bg-slate-900 text-white px-4 py-3 font-bold text-sm flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-list text-brand-400"></i>
+          <span data-i18n="categoriesMenu">Categories Menu</span>
+        </div>
+        <button onclick="collapseAllSubmenus()" title="Collapse All" class="text-slate-400 hover:text-white text-xs">
+          <i class="fa-solid fa-compress"></i>
+        </button>
+      </div>
+      <ul class="divide-y divide-slate-100 text-sm font-medium text-slate-700" id="sidebarList">
+        <!-- Rendered by JS -->
+      </ul>
+    </aside>
+
+    <!-- CATALOG MAIN AREA -->
+    <main class="lg:col-span-3 flex flex-col">
+      <!-- Breadcrumb & Controls -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-soft mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
+            <a href="#" onclick="filterCategory('all')" class="hover:underline" data-i18n="catalogLink">Catalog</a>
+            <i class="fa-solid fa-chevron-right text-[8px]"></i>
+            <span id="breadcrumbActive" class="text-brand-700 font-bold">All Products</span>
+          </div>
+          <h1 id="sectionTitle" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">All Products Catalog</h1>
+        </div>
+        <div class="flex items-center justify-between sm:justify-end gap-3 text-xs border-t sm:border-0 pt-3 sm:pt-0">
+          <span id="productCount" class="font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">Showing 0 items</span>
+          <button onclick="scrollToTop()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-arrow-up text-[10px]"></i> Top
+          </button>
+        </div>
+      </div>
+
+      <!-- PRODUCT GRID -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" id="productGrid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- PAGINATION -->
+      <div id="paginationContainer" class="mt-8 flex items-center justify-center gap-1.5 text-sm font-bold flex-wrap">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="store-location" class="bg-slate-900 text-slate-300 pt-12 pb-8 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+      <!-- Brand -->
+      <div>
+        <div class="text-white font-black text-lg mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-shop text-emerald-400"></i>
+          SOGA HALAL MART
+        </div>
+        <p class="text-slate-400 leading-relaxed mb-4" data-i18n="footerDesc">
+          Your trusted online Halal grocery shop in Chiba, Japan. Delivering farm-fresh meat, rice, spices, and daily household items nationwide with cold-chain shipping.
+        </p>
+      </div>
+
+      <!-- Address -->
+      <div>
+        <div class="text-white font-bold mb-3 uppercase tracking-wider text-xs" data-i18n="storeAddressTitle">Store Address & Map</div>
+        <p class="text-slate-400 leading-relaxed mb-3">
+          〒260-0842 千葉県千葉市中央区南町2-21-10<br>
+          (2-21-10 Minamicho, Chuo Ward, Chiba)
+        </p>
+        <a href="https://maps.google.com/?q=〒260-0842千葉県千葉市中央区南町2-21-10" target="_blank"
+           class="inline-flex items-center gap-1.5 text-emerald-400 hover:underline font-bold">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span data-i18n="openMap">Open in Google Maps</span>
+        </a>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <div class="text-white font-bold mb-3 uppercase tracking-wider text-xs" data-i18n="supportTitle">Direct Customer Support</div>
+        <p class="text-slate-400 leading-relaxed space-y-1.5">
+          <span class="block"><strong class="text-slate-300">Phone 1:</strong> <a href="tel:09099756585" class="hover:text-white">090-9975-6585</a></span>
+          <span class="block"><strong class="text-slate-300">Phone 2:</strong> <a href="tel:08087310031" class="hover:text-white">080-8731-0031</a></span>
+          <span class="block"><strong class="text-slate-300">WhatsApp:</strong> <a href="https://wa.me/819099756585" target="_blank" class="hover:text-emerald-400">+81 90-9975-6585</a></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+      © 2026 <strong class="text-slate-400">SOGA HALAL MART</strong>. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ========== FLOATING ACTION BUTTONS ========== -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+    <a href="https://wa.me/819099756585?text=Hello%20Soga%20Halal%20Mart" target="_blank"
+       class="float-btn w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-float text-2xl"
+       aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="tel:09099756585"
+       class="float-btn w-14 h-14 bg-brand-700 hover:bg-brand-800 text-white rounded-full flex items-center justify-center shadow-float text-xl"
+       aria-label="Call">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+
+  <!-- ========== CART PANEL ========== -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/40 z-[60] hidden" onclick="toggleCart()"></div>
+  <div id="cartPanel" class="cart-panel fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl flex flex-col">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 bg-slate-50">
+      <h2 class="font-black text-lg flex items-center gap-2">
+        <i class="fa-solid fa-cart-shopping text-brand-600"></i>
+        <span data-i18n="cartTitle">Your Cart</span>
+        <span id="cartCountLabel" class="text-sm font-medium text-slate-500">(0)</span>
+      </h2>
+      <button onclick="toggleCart()" class="w-9 h-9 rounded-full hover:bg-slate-200 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3">
+      <!-- Cart items rendered here -->
+    </div>
+
+    <div class="border-t border-slate-200 p-5 bg-slate-50 space-y-3">
+      <div class="flex justify-between items-center text-lg font-black">
+        <span data-i18n="cartTotal">Total</span>
+        <span id="cartTotal" class="text-price">¥0</span>
+      </div>
+      <p class="text-xs text-slate-500" data-i18n="cartTaxNote">Prices include tax. Free delivery on orders ¥8,500+</p>
+      <button onclick="checkoutWhatsApp()"
+              class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition shadow-md">
+        <i class="fa-brands fa-whatsapp text-xl"></i>
+        <span data-i18n="checkoutBtn">Order via WhatsApp</span>
+      </button>
+      <button onclick="clearCart()" class="w-full text-sm text-slate-500 hover:text-red-600 py-2 transition" data-i18n="clearCart">Clear Cart</button>
+    </div>
+  </div>
+
+  <!-- ========== PRODUCT QUICK VIEW MODAL ========== -->
+  <div id="productModal" class="modal-backdrop fixed inset-0 bg-black/50 z-[80] flex items-center justify-center p-4">
+    <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+      <div id="modalBody" class="p-6">
+        <!-- Content injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TOAST ========== -->
+  <div id="toast" class="toast fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-float z-[90] text-sm font-semibold flex items-center gap-2">
+    <i class="fa-solid fa-check-circle text-emerald-400"></i>
+    <span id="toastMsg">Added to cart</span>
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ========== DATA ==========
+    const rawCategories = [
+      { name: "Meat & Fish", icon: "fa-drumstick-bite", sub: ["Chicken", "Mutton", "Beef", "Fish"], count: 20 },
+      { name: "Masala", icon: "fa-pepper-hot", sub: [], count: 20 },
+      { name: "Drinks", icon: "fa-wine-bottle", sub: [], count: 20 },
+      { name: "Snacks", icon: "fa-cookie", sub: [], count: 20 },
+      { name: "Vegetables", icon: "fa-carrot", sub: [], count: 10 },
+      { name: "Biscuits", icon: "fa-cookie-bite", sub: [], count: 10 },
+      { name: "Others", icon: "fa-boxes-stacked", sub: [], count: 10 },
+      { name: "Dairy Products", icon: "fa-cheese", sub: [], count: 15 },
+      { name: "Sweets", icon: "fa-candy-cane", sub: [], count: 10 },
+      { name: "Health and Beauty", icon: "fa-pump-soap", sub: [], count: 20 },
+      { name: "Dresses", icon: "fa-shirt", sub: [], count: 10 },
+      { name: "Cooking Items", icon: "fa-utensils", sub: ["Rice", "Flour", "Lentil", "Oil", "Sauce", "Pickle", "Milk"], count: 0 },
+      { name: "Kitchen Accessories", icon: "fa-sink", sub: [], count: 10 },
+      { name: "Special Items", icon: "fa-star", sub: [], count: 10 }
+    ];
+
+    const cookingSubCounts = {
+      "Rice": 5, "Flour": 10, "Lentil": 20, "Oil": 10, "Sauce": 10, "Pickle": 10, "Milk": 10
+    };
+
+    // Realistic product name pools
+    const productNames = {
+      "Chicken": ["Whole Chicken", "Chicken Legs", "Chicken Breast", "Chicken Wings", "Chicken Thighs"],
+      "Mutton": ["Mutton Curry Cut", "Mutton Leg", "Mutton Chops", "Mutton Keema", "Mutton Ribs"],
+      "Beef": ["Beef Curry Cut", "Beef Steak", "Beef Mince", "Beef Ribs", "Beef Shank"],
+      "Fish": ["Rohu Fish", "Hilsa Fish", "Tilapia Fillet", "Salmon Steak", "Prawns"],
+      "Masala": ["Garam Masala", "Turmeric Powder", "Cumin Seeds", "Coriander Powder", "Red Chili Powder", "Black Pepper", "Cardamom", "Cinnamon Sticks", "Bay Leaves", "Mustard Seeds"],
+      "Drinks": ["Mango Juice", "Lassi", "Coconut Water", "Green Tea", "Black Tea", "Coffee", "Soft Drink", "Energy Drink", "Rose Syrup", "Milk Shake Mix"],
+      "Snacks": ["Potato Chips", "Namkeen Mix", "Nuts Pack", "Popcorn", "Crackers", "Dried Fruits", "Sev", "Murukku", "Bhujia", "Roasted Peanuts"],
+      "Vegetables": ["Potato", "Onion", "Tomato", "Carrot", "Cabbage", "Spinach", "Eggplant", "Okra", "Green Chili", "Coriander Leaf"],
+      "Biscuits": ["Digestive Biscuit", "Marie Gold", "Chocolate Cookie", "Butter Cookie", "Cream Cracker"],
+      "Others": ["Tissue Box", "Dish Soap", "Laundry Detergent", "Trash Bags", "Paper Towels"],
+      "Dairy Products": ["Fresh Milk", "Yogurt", "Cheese Slice", "Butter", "Ghee", "Cream", "Paneer", "Labneh"],
+      "Sweets": ["Gulab Jamun", "Rasgulla", "Barfi", "Halwa", "Jalebi", "Ladoo", "Sandesh"],
+      "Health and Beauty": ["Shampoo", "Soap Bar", "Toothpaste", "Face Cream", "Hair Oil", "Body Lotion", "Hand Wash", "Sanitizer"],
+      "Dresses": ["Kurta", "Salwar Set", "Hijab", "Scarf", "T-Shirt"],
+      "Rice": ["Basmati Rice 5kg", "Sona Masoori 5kg", "Jasmine Rice 2kg", "Brown Rice 1kg", "Sticky Rice 1kg"],
+      "Flour": ["Atta 5kg", "Maida 1kg", "Besan 1kg", "Rice Flour", "Corn Flour"],
+      "Lentil": ["Masoor Dal", "Moong Dal", "Chana Dal", "Toor Dal", "Urad Dal", "Rajma", "Kabuli Chana"],
+      "Oil": ["Mustard Oil 1L", "Sunflower Oil 1L", "Olive Oil 500ml", "Coconut Oil", "Ghee 500g"],
+      "Sauce": ["Soy Sauce", "Tomato Ketchup", "Chili Sauce", "Mayonnaise", "Vinegar"],
+      "Pickle": ["Mango Pickle", "Lemon Pickle", "Mixed Pickle", "Olive Pickle", "Garlic Pickle"],
+      "Milk": ["Full Cream Milk", "Low Fat Milk", "Almond Milk", "Soy Milk", "Condensed Milk"],
+      "Kitchen Accessories": ["Knife Set", "Cutting Board", "Mixing Bowl", "Spatula", "Pressure Cooker"],
+      "Special Items": ["Dates Premium", "Honey Jar", "Saffron", "Dry Fruits Gift Box", "Special Spice Mix"]
+    };
+
+    let products = [];
+    let imageSerial = 1;
+
+    // Generate products
+    rawCategories.forEach(cat => {
+      if (cat.sub.length > 0 && cat.name === "Meat & Fish") {
+        cat.sub.forEach(subCat => {
+          for (let i = 1; i <= 5; i++) {
+            const names = productNames[subCat] || [`${subCat} Item`];
+            const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
+            products.push({
+              id: imageSerial,
+              title,
+              category: cat.name,
+              subcategory: subCat,
+              price: Math.floor(Math.random() * 1500) + 300,
+              imageTag: `kind${imageSerial}`,
+              imgClass: 'img-meat'
+            });
+            imageSerial++;
+          }
+        });
+      } else if (cat.name === "Cooking Items") {
+        Object.keys(cookingSubCounts).forEach(subCat => {
+          const cnt = cookingSubCounts[subCat];
+          for (let i = 1; i <= cnt; i++) {
+            const names = productNames[subCat] || [`${subCat} Item`];
+            const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
+            products.push({
+              id: imageSerial,
+              title,
+              category: cat.name,
+              subcategory: subCat,
+              price: Math.floor(Math.random() * 1200) + 200,
+              imageTag: `kind${imageSerial}`,
+              imgClass: 'img-cook'
+            });
+            imageSerial++;
+          }
+        });
+      } else {
+        for (let i = 1; i <= cat.count; i++) {
+          const names = productNames[cat.name] || [`${cat.name} Product`];
+          const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
+          let imgClass = 'img-other';
+          if (cat.name === 'Masala') imgClass = 'img-spice';
+          else if (cat.name === 'Drinks') imgClass = 'img-drink';
+          else if (cat.name === 'Snacks' || cat.name === 'Biscuits') imgClass = 'img-snack';
+          else if (cat.name === 'Vegetables') imgClass = 'img-veg';
+          else if (cat.name === 'Dairy Products') imgClass = 'img-dairy';
+          else if (cat.name === 'Sweets') imgClass = 'img-sweet';
+
+          products.push({
+            id: imageSerial,
+            title,
+            category: cat.name,
+            subcategory: '',
+            price: Math.floor(Math.random() * 2000) + 150,
+            imageTag: `kind${imageSerial}`,
+            imgClass
+          });
+          imageSerial++;
+        }
+      }
+    });
+
+    // ========== STATE ==========
+    let currentFilteredProducts = [...products];
+    let currentPage = 1;
+    const itemsPerPage = 20;
+    let cart = JSON.parse(localStorage.getItem('sogaCart') || '[]');
+
+    // ========== RENDER SIDEBAR ==========
+    function renderSidebar() {
+      const list = document.getElementById('sidebarList');
+      let html = `
+        <li>
+          <button onclick="filterCategory('all')" class="w-full px-4 py-3 text-left hover:bg-brand-50 hover:text-brand-800 transition flex items-center justify-between font-bold border-b border-slate-100">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-border-all text-slate-400"></i> All Products</span>
+            <span class="bg-brand-100 text-brand-800 text-[10px] px-2 py-0.5 rounded-full font-bold">${products.length}</span>
+          </button>
+        </li>`;
+
+      rawCategories.forEach((cat, index) => {
+        const hasSub = cat.sub && cat.sub.length > 0;
+        const catCount = getCategoryCount(cat.name);
+
+        html += `
+          <li class="category-item">
+            <div class="flex items-center justify-between w-full hover:bg-brand-50 transition group">
+              <button onclick="filterCategory('${cat.name}')" class="flex-1 px-4 py-2.5 text-left font-semibold text-slate-800 hover:text-brand-800 flex items-center gap-2">
+                <i class="fa-solid ${cat.icon} text-slate-400 group-hover:text-brand-600 w-4 text-center"></i>
+                <span>${cat.name}</span>
+                <span class="text-[10px] text-slate-400 font-normal">(${catCount})</span>
+              </button>
+              ${hasSub ? `
+                <button onclick="toggleAccordion('submenu-${index}', 'arrow-${index}', event)" class="px-3 py-2.5 text-slate-400 hover:text-brand-700 transition" title="Toggle">
+                  <i id="arrow-${index}" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                </button>` : ''}
+            </div>
+            ${hasSub ? `
+              <ul id="submenu-${index}" class="submenu bg-slate-50 border-y border-slate-100 text-[13px] overflow-hidden">
+                ${cat.sub.map(sub => {
+                  const subCount = getSubCategoryCount(sub);
+                  return `
+                    <li>
+                      <button onclick="filterSubCategory('${sub}')" class="w-full pl-10 pr-4 py-2 text-left hover:bg-brand-100 hover:text-brand-900 transition flex items-center justify-between text-slate-600 font-medium">
+                        <span>${sub}</span>
+                        <span class="text-[9px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded-md font-bold">${subCount}</span>
+                      </button>
+                    </li>`;
+                }).join('')}
+              </ul>` : ''}
+          </li>`;
+      });
+
+      list.innerHTML = html;
+    }
+
+    function getCategoryCount(catName) {
+      return products.filter(p => p.category === catName).length;
+    }
+    function getSubCategoryCount(subName) {
+      return products.filter(p => p.subcategory === subName).length;
+    }
+
+    function toggleAccordion(menuId, arrowId, event) {
+      if (event) event.stopPropagation();
+      const menu = document.getElementById(menuId);
+      const arrow = document.getElementById(arrowId);
+      if (menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        arrow.classList.remove('rotate-180');
+      } else {
+        menu.classList.add('open');
+        arrow.classList.add('rotate-180');
+      }
+    }
+
+    function collapseAllSubmenus() {
+      document.querySelectorAll('.submenu').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
+    }
+
+    function toggleSidebarMenu() {
+      const sidebar = document.getElementById('sidebarAside');
+      const arrow = document.getElementById('navCategoryArrow');
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('block');
+        arrow.classList.add('rotate-180');
+        sidebar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('block');
+        arrow.classList.remove('rotate-180');
+      }
+    }
+
+    // ========== RENDER PRODUCTS ==========
+    function renderProductsGrid() {
+      const grid = document.getElementById('productGrid');
+      const total = currentFilteredProducts.length;
+      document.getElementById('productCount').innerText = `Showing ${total} items`;
+
+      if (total === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-slate-200 shadow-soft">
+            <i class="fa-solid fa-basket-shopping text-5xl text-slate-300 mb-4"></i>
+            <p class="text-sm font-bold text-slate-500 mb-4" data-i18n="noProducts">No products match your search or category filter.</p>
+            <button onclick="filterCategory('all')" class="mt-2 text-sm bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-2.5 rounded-xl transition">
+              View All Products
+            </button>
+          </div>`;
+        document.getElementById('paginationContainer').innerHTML = '';
+        return;
+      }
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, total);
+      const paginatedItems = currentFilteredProducts.slice(startIndex, endIndex);
+
+      let html = '';
+      paginatedItems.forEach(p => {
+        html += `
+          <div class="product-card bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-soft card-hover flex flex-col justify-between group">
+            <div class="relative cursor-pointer" onclick="openProductModal(${p.id})">
+              <div class="w-full h-36 sm:h-40 ${p.imgClass} blank-img text-center px-2">
+                <span class="text-xs sm:text-sm leading-tight">${p.title.split(' ').slice(0, 3).join(' ')}</span>
+              </div>
+              ${p.subcategory ? `<span class="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md uppercase z-10">${p.subcategory}</span>` : ''}
+              <button class="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-slate-600 opacity-0 group-hover:opacity-100 transition shadow" onclick="event.stopPropagation(); openProductModal(${p.id})">
+                <i class="fa-solid fa-expand text-xs"></i>
+              </button>
+            </div>
+            <div class="p-3 sm:p-3.5 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">${p.category}</span>
+                <h3 class="font-bold text-slate-800 text-xs sm:text-sm line-clamp-2 mt-0.5 leading-snug">${p.title}</h3>
+                <div class="text-[10px] font-semibold text-slate-400 mt-1 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i> In Stock
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-base sm:text-lg font-black text-price">¥${p.price.toLocaleString()}</span>
+                  <span class="text-[10px] text-slate-400">(Tax Incl.)</span>
+                </div>
+                <div class="flex gap-1.5">
+                  <button onclick="addToCart(${p.id})" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-cart-plus"></i> Add
+                  </button>
+                  <a href="https://wa.me/819099756585?text=${encodeURIComponent('Hello! I would like to order: ' + p.title + ' (¥' + p.price + ')')}" target="_blank"
+                     class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-2 rounded-lg transition flex items-center justify-center" title="WhatsApp Order">
+                    <i class="fa-brands fa-whatsapp"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+      grid.innerHTML = html;
+      renderPaginationControls(total);
+    }
+
+    // ========== PAGINATION ==========
+    function renderPaginationControls(totalItems) {
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      const container = document.getElementById('paginationContainer');
+      if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+      }
+
+      let html = `
+        <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed bg-slate-200 text-slate-500 px-3 py-1.5 rounded-lg"' : 'class="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition"'}>
+          <i class="fa-solid fa-chevron-left"></i> Prev
+        </button>`;
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+          html += `
+            <button onclick="changePage(${i})" class="px-3.5 py-1.5 rounded-lg transition ${currentPage === i ? 'bg-brand-600 text-white' : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-700'}">
+              ${i}
+            </button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+          html += `<span class="px-1 text-slate-400">…</span>`;
+        }
+      }
+
+      html += `
+        <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed bg-slate-200 text-slate-500 px-3 py-1.5 rounded-lg"' : 'class="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition"'}>
+          Next <i class="fa-solid fa-chevron-right"></i>
+        </button>`;
+
+      container.innerHTML = html;
+    }
+
+    function changePage(page) {
+      currentPage = page;
+      renderProductsGrid();
+      window.scrollTo({ top: 180, behavior: 'smooth' });
+    }
+
+    // ========== FILTERING ==========
+    function filterCategory(catName) {
+      currentPage = 1;
+      document.getElementById('breadcrumbActive').innerText = catName === 'all' ? 'All Products' : catName;
+      document.getElementById('sectionTitle').innerText = catName === 'all' ? 'All Products Catalog' : catName;
+      if (catName === 'all') {
+        currentFilteredProducts = [...products];
+      } else {
+        currentFilteredProducts = products.filter(p => p.category === catName);
+      }
+      renderProductsGrid();
+      // Close mobile sidebar if open
+      if (window.innerWidth < 1024) {
+        document.getElementById('sidebarAside').classList.add('hidden');
+        document.getElementById('sidebarAside').classList.remove('block');
+      }
+    }
+
+    function filterSubCategory(subName) {
+      currentPage = 1;
+      document.getElementById('breadcrumbActive').innerText = subName;
+      document.getElementById('sectionTitle').innerText = `${subName} Items`;
+      currentFilteredProducts = products.filter(p => p.subcategory === subName);
+      renderProductsGrid();
+      if (window.innerWidth < 1024) {
+        document.getElementById('sidebarAside').classList.add('hidden');
+        document.getElementById('sidebarAside').classList.remove('block');
+      }
+    }
+
+    function filterProducts() {
+      currentPage = 1;
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      document.getElementById('breadcrumbActive').innerText = q ? `Search: "${q}"` : 'All Products';
+      document.getElementById('sectionTitle').innerText = q ? `Search Results for "${q}"` : 'All Products Catalog';
+      currentFilteredProducts = products.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.subcategory.toLowerCase().includes(q)
+      );
+      renderProductsGrid();
+    }
+
+    function filterProductsMobile() {
+      currentPage = 1;
+      const q = document.getElementById('searchInputMobile').value.toLowerCase().trim();
+      document.getElementById('breadcrumbActive').innerText = q ? `Search: "${q}"` : 'All Products';
+      document.getElementById('sectionTitle').innerText = q ? `Search Results for "${q}"` : 'All Products Catalog';
+      currentFilteredProducts = products.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.subcategory.toLowerCase().includes(q)
+      );
+      renderProductsGrid();
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ========== CART ==========
+    function saveCart() {
+      localStorage.setItem('sogaCart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cartBadge');
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      if (count > 0) {
+        badge.innerText = count > 99 ? '99+' : count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+      document.getElementById('cartCountLabel').innerText = `(${count})`;
+
+      const container = document.getElementById('cartItems');
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 text-slate-400">
+            <i class="fa-solid fa-cart-shopping text-4xl mb-3 opacity-40"></i>
+            <p class="font-medium" data-i18n="emptyCart">Your cart is empty</p>
+          </div>`;
+        document.getElementById('cartTotal').innerText = '¥0';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        html += `
+          <div class="flex gap-3 bg-white border border-slate-150 rounded-xl p-3 shadow-sm">
+            <div class="w-16 h-16 rounded-lg ${item.imgClass} blank-img text-[10px] shrink-0">${item.title.split(' ')[0]}</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-sm text-slate-800 line-clamp-1">${item.title}</div>
+              <div class="text-price font-black text-sm mt-0.5">¥${item.price.toLocaleString()}</div>
+              <div class="flex items-center gap-2 mt-2">
+                <button onclick="changeQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-sm font-bold">−</button>
+                <span class="font-bold text-sm w-6 text-center">${item.qty}</span>
+                <button onclick="changeQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-sm font-bold">+</button>
+                <button onclick="removeFromCart(${item.id})" class="ml-auto text-slate-400 hover:text-red-500 transition text-sm">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>`;
+      });
+      container.innerHTML = html;
+      document.getElementById('cartTotal').innerText = '¥' + total.toLocaleString();
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      saveCart();
+      showToast('Added to cart!');
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      saveCart();
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function toggleCart() {
+      const panel = document.getElementById('cartPanel');
+      const overlay = document.getElementById('cartOverlay');
+      panel.classList.toggle('open');
+      overlay.classList.toggle('hidden');
+      document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function checkoutWhatsApp() {
+      if (cart.length === 0) {
+        showToast('Cart is empty');
+        return;
+      }
+      let message = 'Hello Soga Halal Mart! I would like to order:\n\n';
+      cart.forEach(item => {
+        message += `• ${item.title} × ${item.qty} = ¥${(item.price * item.qty).toLocaleString()}\n`;
+      });
+      const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+      message += `\nTotal: ¥${total.toLocaleString()}\n\nPlease confirm availability. Thank you!`;
+      window.open(`https://wa.me/819099756585?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // ========== PRODUCT MODAL ==========
+    function openProductModal(id) {
+      const p = products.find(pr => pr.id === id);
+      if (!p) return;
+      const body = document.getElementById('modalBody');
+      body.innerHTML = `
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <span class="text-xs font-bold text-emerald-600 uppercase">${p.category}${p.subcategory ? ' › ' + p.subcategory : ''}</span>
+            <h2 class="text-xl font-black text-slate-900 mt-1">${p.title}</h2>
+          </div>
+          <button onclick="closeProductModal()" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div class="w-full h-48 rounded-xl ${p.imgClass} blank-img mb-5 text-lg">${p.title}</div>
+        <div class="flex items-baseline gap-2 mb-4">
+          <span class="text-3xl font-black text-price">¥${p.price.toLocaleString()}</span>
+          <span class="text-sm text-slate-400">(Tax Included)</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-emerald-600 font-semibold mb-6">
+          <i class="fa-solid fa-circle-check"></i> In Stock • Ready for delivery
+        </div>
+        <div class="flex gap-3">
+          <button onclick="addToCart(${p.id}); closeProductModal();" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <a href="https://wa.me/819099756585?text=${encodeURIComponent('Hello! I would like to order: ' + p.title + ' (¥' + p.price + ')')}" target="_blank"
+             class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl transition flex items-center justify-center gap-2 font-bold">
+            <i class="fa-brands fa-whatsapp text-xl"></i> Order
+          </a>
+        </div>`;
+      document.getElementById('productModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('productModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('productModal')) closeProductModal();
+    });
+
+    // ========== TOAST ==========
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // ========== TRANSLATIONS ==========
+    const translations = {
+      en: {
+        freeDeliveryTag: "Free Delivery",
+        freeDeliveryText: "Orders ¥8,500+ for free delivery all over Japan!",
+        logoSub: "Japan's Trusted Online Grocery",
+        searchPlaceholder: "Search products...",
+        searchBtn: "Search",
+        supportLabel: "Direct Support",
+        whatsappBtn: "WhatsApp Order",
+        allCategories: "ALL CATEGORIES",
+        navHome: "Home",
+        navLocation: "Store Location",
+        categoriesMenu: "Categories Menu",
+        catalogLink: "Catalog",
+        heroBadge: "100% Halal Certified • Cold Chain Delivery",
+        heroTitle: "Premium Halal Groceries Delivered to Your Door",
+        heroDesc: "Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy free delivery across Japan on orders over ¥8,500.",
+        heroCta: "Shop Now",
+        feature1Title: "Nationwide Delivery",
+        feature1Desc: "Cold-chain shipping",
+        feature2Title: "Farm-Fresh Quality",
+        feature2Desc: "Premium Halal ingredients",
+        feature3Title: "Direct Support",
+        feature3Desc: "WhatsApp & Phone",
+        footerDesc: "Your trusted online Halal grocery shop in Chiba, Japan. Delivering farm-fresh meat, rice, spices, and daily household items nationwide with cold-chain shipping.",
+        storeAddressTitle: "Store Address & Map",
+        openMap: "Open in Google Maps",
+        supportTitle: "Direct Customer Support",
+        cartTitle: "Your Cart",
+        cartTotal: "Total",
+        cartTaxNote: "Prices include tax. Free delivery on orders ¥8,500+",
+        checkoutBtn: "Order via WhatsApp",
+        clearCart: "Clear Cart",
+        emptyCart: "Your cart is empty",
+        noProducts: "No products match your search or category filter."
+      },
+      ja: {
+        freeDeliveryTag: "送料無料",
+        freeDeliveryText: "8,500円以上のご注文で日本全国送料無料！",
+        logoSub: "日本で信頼されるハラール専門店",
+        searchPlaceholder: "商品を検索...",
+        searchBtn: "検索",
+        supportLabel: "サポート",
+        whatsappBtn: "WhatsApp注文",
+        allCategories: "すべてのカテゴリー",
+        navHome: "ホーム",
+        navLocation: "店舗情報・住所",
+        categoriesMenu: "カテゴリー一覧",
+        catalogLink: "カタログ",
+        heroBadge: "100%ハラール認証 • コールドチェーン配送",
+        heroTitle: "プレミアムハラール食材を玄関までお届け",
+        heroDesc: "新鮮な肉、スパイス、米、乳製品、日用品。オンライン注文で8,500円以上は日本全国送料無料。",
+        heroCta: "今すぐ購入",
+        feature1Title: "全国配送",
+        feature1Desc: "コールドチェーン配送",
+        feature2Title: "新鮮な品質",
+        feature2Desc: "プレミアムハラール食材",
+        feature3Title: "直接サポート",
+        feature3Desc: "WhatsApp & 電話",
+        footerDesc: "千葉県の信頼できるオンラインハラール食料品店。新鮮な肉、米、スパイス、日用品を全国にコールドチェーン配送でお届けします。",
+        storeAddressTitle: "店舗住所 & 地図",
+        openMap: "Googleマップで開く",
+        supportTitle: "お客様サポート",
+        cartTitle: "カート",
+        cartTotal: "合計",
+        cartTaxNote: "税込価格。8,500円以上で送料無料",
+        checkoutBtn: "WhatsAppで注文",
+        clearCart: "カートを空にする",
+        emptyCart: "カートは空です",
+        noProducts: "条件に一致する商品がありません。"
+      },
+      bn: {
+        freeDeliveryTag: "ফ্রি ডেলিভারি",
+        freeDeliveryText: "৮,৫০০ ইয়েন বা তার বেশি অর্ডারে পুরো জাপানে ফ্রি ডেলিভারি!",
+        logoSub: "জাপানের বিশ্বস্ত হালাল গ্রোসারি",
+        searchPlaceholder: "পণ্য খুঁজুন...",
+        searchBtn: "খুঁজুন",
+        supportLabel: "সরাসরি সাপোর্ট",
+        whatsappBtn: "হোয়াটসঅ্যাপ অর্ডার",
+        allCategories: "সকল ক্যাটাগরি",
+        navHome: "হোম",
+        navLocation: "লোকেশন ও ঠিকানা",
+        categoriesMenu: "ক্যাটাগরি মেনু",
+        catalogLink: "ক্যাটালগ",
+        heroBadge: "১০০% হালাল সার্টিফাইড • কোল্ড চেইন ডেলিভারি",
+        heroTitle: "প্রিমিয়াম হালাল গ্রোসারি আপনার দরজায়",
+        heroDesc: "তাজা মাংস, মসলা, চাল, দুগ্ধজাত ও দৈনন্দিন পণ্য। অনলাইনে অর্ডার করুন এবং ৮,৫০০ ইয়েনের উপরে জাপানজুড়ে ফ্রি ডেলিভারি উপভোগ করুন।",
+        heroCta: "এখনই কিনুন",
+        feature1Title: "সারাদেশে ডেলিভারি",
+        feature1Desc: "কোল্ড-চেইন শিপিং",
+        feature2Title: "খামার-তাজা মান",
+        feature2Desc: "প্রিমিয়াম হালাল উপকরণ",
+        feature3Title: "সরাসরি সাপোর্ট",
+        feature3Desc: "হোয়াটসঅ্যাপ ও ফোন",
+        footerDesc: "চিবা, জাপানের বিশ্বস্ত অনলাইন হালাল গ্রোসারি শপ। তাজা মাংস, চাল, মসলা এবং দৈনন্দিন পণ্য কোল্ড-চেইন শিপিং সহ সারাদেশে পৌঁছে দিচ্ছি।",
+        storeAddressTitle: "দোকানের ঠিকানা ও মানচিত্র",
+        openMap: "গুগল ম্যাপে খুলুন",
+        supportTitle: "সরাসরি গ্রাহক সাপোর্ট",
+        cartTitle: "আপনার কার্ট",
+        cartTotal: "মোট",
+        cartTaxNote: "মূল্যে ট্যাক্স অন্তর্ভুক্ত। ৮,৫০০+ অর্ডারে ফ্রি ডেলিভারি",
+        checkoutBtn: "হোয়াটসঅ্যাপে অর্ডার করুন",
+        clearCart: "কার্ট খালি করুন",
+        emptyCart: "আপনার কার্ট খালি",
+        noProducts: "আপনার অনুসন্ধান বা ফিল্টারের সাথে মিলে এমন কোনো পণ্য নেই।"
+      }
+    };
+
+    function setLanguage(lang) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('bg-white/30'));
+      document.getElementById('btn-' + lang).classList.add('bg-white/30');
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) el.innerText = translations[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) el.placeholder = translations[lang][key];
+      });
+    }
+
+    // ========== INIT ==========
+    renderSidebar();
+    renderProductsGrid();
+    updateCartUI();
+    setLanguage('en'); // default
+
+    // Keep the opening animation brief and skip it quickly for reduced-motion users.
+    const intro = document.getElementById('siteIntro');
+    const introDelay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 2100;
+    window.setTimeout(() => intro.classList.add('is-hidden'), introDelay);
+  </script>
+</body>
+</html>
