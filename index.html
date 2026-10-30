@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soga Halal Mart – Premium Halal Online Grocery in Chiba, Japan</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
   <meta name="description" content="Order premium Halal meat, spices, rice, dairy and daily essentials online. Free delivery over ¥8,500 across Japan. Based in Chiba.">
   <meta name="theme-color" content="#15803d">
 
@@ -146,6 +144,16 @@
     @keyframes intro-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes intro-logo { 0% { opacity: 0; transform: scale(.45); } 60% { opacity: 1; transform: scale(1.07); } 100% { opacity: 1; transform: scale(1); } }
 
+    /* Full-width shop photo carousel behind the existing hero content. */
+    .hero-carousel { position: absolute; inset: 0; overflow: hidden; background: #10251a; }
+    .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; opacity: 0; transform: scale(1.035) translateX(1.5%); transition: opacity 1s ease, transform 6s ease; }
+    .hero-slide.is-active { opacity: 1; transform: scale(1) translateX(0); }
+    .hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(3,20,12,.82) 0%, rgba(3,20,12,.56) 58%, rgba(3,20,12,.35) 100%); }
+    .hero-dot { width: .65rem; height: .65rem; border-radius: 9999px; background: rgba(255,255,255,.55); transition: all .25s ease; }
+    .hero-dot[aria-current="true"] { width: 1.8rem; background: white; }
+    @media (max-width: 767px) { .hero-shade { background: linear-gradient(180deg, rgba(3,20,12,.55), rgba(3,20,12,.76)); } .hero-slide { object-position: center center; } }
+    @media (prefers-reduced-motion: reduce) { .hero-slide, .hero-dot { transition: none; } }
+
     /* The category panel must stay in normal document flow on phones. */
     @media (max-width: 1023px) {
       #sidebarAside:not(.hidden) {
@@ -175,8 +183,8 @@
   <div class="bg-gradient-to-r from-red-600 via-amber-500 to-emerald-600 text-white text-xs sm:text-sm font-semibold py-2.5 px-4 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center">
       <div class="flex items-center gap-2">
-        <span class="bg-white text-red-600 px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase animate-pulse-soft shrink-0" data-i18n="freeDeliveryTag">Free Delivery</span>
-        <span data-i18n="freeDeliveryText">Orders ¥8,500+ free delivery all over Japan!</span>
+        <span class="bg-white text-red-600 px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase animate-pulse-soft shrink-0" data-i18n="freeDeliveryTag">Delivery</span>
+        <span data-i18n="freeDeliveryText">Orders ¥8,500+ delivery all over Japan!</span>
       </div>
 
       <!-- Language Switcher -->
@@ -195,7 +203,7 @@
       <!-- Logo -->
       <a href="#" class="flex items-center gap-2.5 shrink-0 group" onclick="filterCategory('all')">
         <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-md ring-1 ring-brand-100 transition group-hover:ring-brand-300">
-          <img src="logo.JPG" alt="Soga Halal Mart" class="w-full h-full object-contain p-0.5">
+          <img src="logo.JPG" alt="Soga Halal Mart shop logo" class="w-full h-full object-contain p-0.5">
         </div>
         <div class="hidden sm:block">
           <div class="text-lg md:text-xl font-black text-brand-800 tracking-tight leading-none group-hover:text-brand-700 transition">SOGA HALAL MART</div>
@@ -227,11 +235,11 @@
           </a>
         </div>
 
-        <!-- WhatsApp Order (desktop) -->
-        <a href="https://wa.me/819099756585" target="_blank"
-           class="hidden sm:flex bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl font-bold text-sm items-center gap-2 shadow-sm transition">
-          <i class="fa-brands fa-whatsapp text-lg"></i>
-          <span data-i18n="whatsappBtn">WhatsApp Order</span>
+        <!-- Visit our Facebook (desktop) -->
+        <a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer"
+           class="hidden sm:flex bg-[#1877F2] hover:bg-[#166FE5] text-white px-3.5 py-2 rounded-xl font-bold text-sm items-center gap-2 shadow-sm transition">
+          <i class="fa-brands fa-facebook text-lg"></i>
+          <span data-i18n="facebookBtn">Visit our Facebook</span>
         </a>
 
         <!-- Cart Button -->
@@ -280,60 +288,53 @@
     </div>
   </nav>
 
-  <!-- ========== HERO SECTION ========== -->
-  <section class="relative bg-gradient-to-br from-brand-800 via-brand-700 to-emerald-600 text-white overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-      <div class="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-      <div class="absolute bottom-0 right-20 w-80 h-80 bg-amber-300 rounded-full blur-3xl"></div>
+  <!-- ========== SHOP PHOTO CAROUSEL HERO ========== -->
+  <section id="shopHero" class="relative text-white overflow-hidden min-h-[500px] md:min-h-[520px] flex items-center">
+    <div class="hero-carousel" aria-hidden="true">
+      <img class="hero-slide is-active" src="images/shop-front.jpeg" alt="">
+      <img class="hero-slide" src="images/shop-aisle.jpeg" alt="">
+      <img class="hero-slide" src="images/shop-interior.jpeg" alt="">
+      <div class="hero-shade"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 py-12 md:py-16 relative z-10 flex flex-col md:flex-row items-center gap-8">
+    <div class="max-w-7xl mx-auto w-full px-4 py-12 md:py-16 relative z-10 flex flex-col md:flex-row items-center gap-8">
       <div class="flex-1 text-center md:text-left">
         <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium mb-4">
           <i class="fa-solid fa-shield-halved text-amber-300"></i>
           <span data-i18n="heroBadge">100% Halal Certified • Cold Chain Delivery</span>
         </div>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-4" data-i18n="heroTitle">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight mb-4 drop-shadow-lg" data-i18n="heroTitle">
           Premium Halal Groceries<br class="hidden sm:block"> Delivered to Your Door
         </h1>
-        <p class="text-brand-100 text-base md:text-lg max-w-xl mb-6" data-i18n="heroDesc">
-          Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy free delivery across Japan on orders over ¥8,500.
+        <p class="text-white text-base md:text-lg max-w-xl mb-6 drop-shadow" data-i18n="heroDesc">
+          Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy delivery across Japan on orders over ¥8,500.
         </p>
         <div class="flex flex-wrap gap-3 justify-center md:justify-start">
           <button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})"
                   class="bg-white text-brand-800 hover:bg-brand-50 font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span data-i18n="heroCta">Shop Now</span>
+            <i class="fa-solid fa-bag-shopping"></i><span data-i18n="heroCta">Shop Now</span>
           </button>
-          <a href="https://wa.me/819099756585" target="_blank"
-             class="bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
-            <i class="fa-brands fa-whatsapp text-xl"></i>
-            <span data-i18n="whatsappBtn">WhatsApp Order</span>
+          <a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer"
+             class="bg-[#1877F2] hover:bg-[#166FE5] text-white font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+            <i class="fa-brands fa-facebook text-xl"></i><span data-i18n="facebookBtn">Visit our Facebook</span>
           </a>
         </div>
       </div>
-      <div class="hidden md:flex flex-col gap-3 text-sm">
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-truck-fast"></i></div>
-          <div>
-            <div class="font-bold" data-i18n="feature1Title">Nationwide Delivery</div>
-            <div class="text-brand-100 text-xs" data-i18n="feature1Desc">Cold-chain shipping</div>
-          </div>
+      <div class="hidden md:flex flex-col gap-3 text-sm md:w-72">
+        <div class="bg-black/35 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-truck-fast"></i></div><div><div class="font-bold" data-i18n="feature1Title">Nationwide Delivery</div><div class="text-white/85 text-xs" data-i18n="feature1Desc">Cold-chain shipping</div></div>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-leaf"></i></div>
-          <div>
-            <div class="font-bold" data-i18n="feature2Title">Farm-Fresh Quality</div>
-            <div class="text-brand-100 text-xs" data-i18n="feature2Desc">Premium Halal ingredients</div>
-          </div>
+        <div class="bg-black/35 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-leaf"></i></div><div><div class="font-bold" data-i18n="feature2Title">Farm-Fresh Quality</div><div class="text-white/85 text-xs" data-i18n="feature2Desc">Premium Halal ingredients</div></div>
         </div>
-        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-headset"></i></div>
-          <div>
-            <div class="font-bold" data-i18n="feature3Title">Direct Support</div>
-            <div class="text-brand-100 text-xs" data-i18n="feature3Desc">WhatsApp & Phone</div>
-          </div>
+        <div class="bg-black/35 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center text-amber-300"><i class="fa-solid fa-headset"></i></div><div><div class="font-bold" data-i18n="feature3Title">Direct Support</div><div class="text-white/85 text-xs" data-i18n="feature3Desc">Facebook & Phone</div></div>
         </div>
       </div>
+    </div>
+    <div class="absolute z-20 bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2" role="group" aria-label="Shop photos">
+      <button class="hero-dot" aria-label="Show shop front photo" aria-current="true" data-slide="0"></button>
+      <button class="hero-dot" aria-label="Show shop aisle photo" aria-current="false" data-slide="1"></button>
+      <button class="hero-dot" aria-label="Show store interior photo" aria-current="false" data-slide="2"></button>
     </div>
   </section>
 
@@ -398,7 +399,7 @@
           SOGA HALAL MART
         </div>
         <p class="text-slate-400 leading-relaxed mb-4" data-i18n="footerDesc">
-          Your trusted online Halal grocery shop in Chiba, Japan. Delivering farm-fresh meat, rice, spices, and daily household items nationwide with cold-chain shipping.
+          Your trusted Halal grocery shop in Chiba, Japan. Browse our listed products and contact us on Facebook for availability.
         </p>
       </div>
 
@@ -422,7 +423,7 @@
         <p class="text-slate-400 leading-relaxed space-y-1.5">
           <span class="block"><strong class="text-slate-300">Phone 1:</strong> <a href="tel:09099756585" class="hover:text-white">090-9975-6585</a></span>
           <span class="block"><strong class="text-slate-300">Phone 2:</strong> <a href="tel:08087310031" class="hover:text-white">080-8731-0031</a></span>
-          <span class="block"><strong class="text-slate-300">WhatsApp:</strong> <a href="https://wa.me/819099756585" target="_blank" class="hover:text-emerald-400">+81 90-9975-6585</a></span>
+          <span class="block"><strong class="text-slate-300">Facebook:</strong> <a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400">+81 90-9975-6585</a></span>
         </p>
       </div>
     </div>
@@ -434,10 +435,10 @@
 
   <!-- ========== FLOATING ACTION BUTTONS ========== -->
   <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-    <a href="https://wa.me/819099756585?text=Hello%20Soga%20Halal%20Mart" target="_blank"
-       class="float-btn w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-float text-2xl"
-       aria-label="WhatsApp">
-      <i class="fa-brands fa-whatsapp"></i>
+    <a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer"
+       class="float-btn w-14 h-14 bg-[#1877F2] hover:bg-[#166FE5] text-white rounded-full flex items-center justify-center shadow-float text-2xl"
+       aria-label="Facebook page">
+      <i class="fa-brands fa-facebook"></i>
     </a>
     <a href="tel:09099756585"
        class="float-btn w-14 h-14 bg-brand-700 hover:bg-brand-800 text-white rounded-full flex items-center justify-center shadow-float text-xl"
@@ -470,10 +471,10 @@
         <span id="cartTotal" class="text-price">¥0</span>
       </div>
       <p class="text-xs text-slate-500" data-i18n="cartTaxNote">Prices include tax. Free delivery on orders ¥8,500+</p>
-      <button onclick="checkoutWhatsApp()"
-              class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition shadow-md">
-        <i class="fa-brands fa-whatsapp text-xl"></i>
-        <span data-i18n="checkoutBtn">Order via WhatsApp</span>
+      <button onclick="checkoutFacebook()"
+              class="w-full bg-[#1877F2] hover:bg-[#166FE5] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition shadow-md">
+        <i class="fa-brands fa-facebook text-xl"></i>
+        <span data-i18n="checkoutBtn">Contact us on Facebook</span>
       </button>
       <button onclick="clearCart()" class="w-full text-sm text-slate-500 hover:text-red-600 py-2 transition" data-i18n="clearCart">Clear Cart</button>
     </div>
@@ -498,124 +499,31 @@
   <script>
     // ========== DATA ==========
     const rawCategories = [
-      { name: "Meat & Fish", icon: "fa-drumstick-bite", sub: ["Chicken", "Mutton", "Beef", "Fish"], count: 20 },
-      { name: "Masala", icon: "fa-pepper-hot", sub: [], count: 20 },
-      { name: "Drinks", icon: "fa-wine-bottle", sub: [], count: 20 },
-      { name: "Snacks", icon: "fa-cookie", sub: [], count: 20 },
-      { name: "Vegetables", icon: "fa-carrot", sub: [], count: 10 },
-      { name: "Biscuits", icon: "fa-cookie-bite", sub: [], count: 10 },
-      { name: "Others", icon: "fa-boxes-stacked", sub: [], count: 10 },
-      { name: "Dairy Products", icon: "fa-cheese", sub: [], count: 15 },
-      { name: "Sweets", icon: "fa-candy-cane", sub: [], count: 10 },
-      { name: "Health and Beauty", icon: "fa-pump-soap", sub: [], count: 20 },
-      { name: "Dresses", icon: "fa-shirt", sub: [], count: 10 },
-      { name: "Cooking Items", icon: "fa-utensils", sub: ["Rice", "Flour", "Lentil", "Oil", "Sauce", "Pickle", "Milk"], count: 0 },
-      { name: "Kitchen Accessories", icon: "fa-sink", sub: [], count: 10 },
-      { name: "Special Items", icon: "fa-star", sub: [], count: 10 }
+      {name:"Oils",icon:"fa-bottle-droplet",sub:[]},{name:"Ghee",icon:"fa-jar",sub:[]},{name:"Lentils & Beans",icon:"fa-seedling",sub:[]},{name:"Rice",icon:"fa-bowl-rice",sub:[]},{name:"Dried Fish",icon:"fa-fish",sub:[]},{name:"Vegetables & Seasonings",icon:"fa-carrot",sub:[]},{name:"Juice",icon:"fa-wine-bottle",sub:[]},{name:"Chicken",icon:"fa-drumstick-bite",sub:[]},{name:"Mutton",icon:"fa-drumstick-bite",sub:[]},{name:"Beef",icon:"fa-cow",sub:[]},{name:"Deer",icon:"fa-paw",sub:[]},{name:"Quail",icon:"fa-dove",sub:[]},{name:"Semai",icon:"fa-bowl-food",sub:[]},
+      {name:"Fresh Fish",icon:"fa-fish",sub:[],comingSoon:true},{name:"Masala",icon:"fa-pepper-hot",sub:[],comingSoon:true},{name:"Other Drinks",icon:"fa-mug-hot",sub:[],comingSoon:true},{name:"Snacks",icon:"fa-cookie",sub:[],comingSoon:true},{name:"Biscuits",icon:"fa-cookie-bite",sub:[],comingSoon:true},{name:"Other Vegetables",icon:"fa-carrot",sub:[],comingSoon:true},{name:"Dairy Products",icon:"fa-cheese",sub:[],comingSoon:true},{name:"Sweets",icon:"fa-candy-cane",sub:[],comingSoon:true},{name:"Health and Beauty",icon:"fa-pump-soap",sub:[],comingSoon:true},{name:"Dresses",icon:"fa-shirt",sub:[],comingSoon:true},{name:"Flour",icon:"fa-wheat-awn",sub:[],comingSoon:true},{name:"Sauce",icon:"fa-bottle-droplet",sub:[],comingSoon:true},{name:"Pickle",icon:"fa-jar",sub:[],comingSoon:true},{name:"Milk",icon:"fa-bottle-water",sub:[],comingSoon:true},{name:"Kitchen Accessories",icon:"fa-sink",sub:[],comingSoon:true},{name:"Special Items",icon:"fa-star",sub:[],comingSoon:true},{name:"Other Items",icon:"fa-boxes-stacked",sub:[],comingSoon:true}
     ];
-
-    const cookingSubCounts = {
-      "Rice": 5, "Flour": 10, "Lentil": 20, "Oil": 10, "Sauce": 10, "Pickle": 10, "Milk": 10
-    };
-
-    // Realistic product name pools
-    const productNames = {
-      "Chicken": ["Whole Chicken", "Chicken Legs", "Chicken Breast", "Chicken Wings", "Chicken Thighs"],
-      "Mutton": ["Mutton Curry Cut", "Mutton Leg", "Mutton Chops", "Mutton Keema", "Mutton Ribs"],
-      "Beef": ["Beef Curry Cut", "Beef Steak", "Beef Mince", "Beef Ribs", "Beef Shank"],
-      "Fish": ["Rohu Fish", "Hilsa Fish", "Tilapia Fillet", "Salmon Steak", "Prawns"],
-      "Masala": ["Garam Masala", "Turmeric Powder", "Cumin Seeds", "Coriander Powder", "Red Chili Powder", "Black Pepper", "Cardamom", "Cinnamon Sticks", "Bay Leaves", "Mustard Seeds"],
-      "Drinks": ["Mango Juice", "Lassi", "Coconut Water", "Green Tea", "Black Tea", "Coffee", "Soft Drink", "Energy Drink", "Rose Syrup", "Milk Shake Mix"],
-      "Snacks": ["Potato Chips", "Namkeen Mix", "Nuts Pack", "Popcorn", "Crackers", "Dried Fruits", "Sev", "Murukku", "Bhujia", "Roasted Peanuts"],
-      "Vegetables": ["Potato", "Onion", "Tomato", "Carrot", "Cabbage", "Spinach", "Eggplant", "Okra", "Green Chili", "Coriander Leaf"],
-      "Biscuits": ["Digestive Biscuit", "Marie Gold", "Chocolate Cookie", "Butter Cookie", "Cream Cracker"],
-      "Others": ["Tissue Box", "Dish Soap", "Laundry Detergent", "Trash Bags", "Paper Towels"],
-      "Dairy Products": ["Fresh Milk", "Yogurt", "Cheese Slice", "Butter", "Ghee", "Cream", "Paneer", "Labneh"],
-      "Sweets": ["Gulab Jamun", "Rasgulla", "Barfi", "Halwa", "Jalebi", "Ladoo", "Sandesh"],
-      "Health and Beauty": ["Shampoo", "Soap Bar", "Toothpaste", "Face Cream", "Hair Oil", "Body Lotion", "Hand Wash", "Sanitizer"],
-      "Dresses": ["Kurta", "Salwar Set", "Hijab", "Scarf", "T-Shirt"],
-      "Rice": ["Basmati Rice 5kg", "Sona Masoori 5kg", "Jasmine Rice 2kg", "Brown Rice 1kg", "Sticky Rice 1kg"],
-      "Flour": ["Atta 5kg", "Maida 1kg", "Besan 1kg", "Rice Flour", "Corn Flour"],
-      "Lentil": ["Masoor Dal", "Moong Dal", "Chana Dal", "Toor Dal", "Urad Dal", "Rajma", "Kabuli Chana"],
-      "Oil": ["Mustard Oil 1L", "Sunflower Oil 1L", "Olive Oil 500ml", "Coconut Oil", "Ghee 500g"],
-      "Sauce": ["Soy Sauce", "Tomato Ketchup", "Chili Sauce", "Mayonnaise", "Vinegar"],
-      "Pickle": ["Mango Pickle", "Lemon Pickle", "Mixed Pickle", "Olive Pickle", "Garlic Pickle"],
-      "Milk": ["Full Cream Milk", "Low Fat Milk", "Almond Milk", "Soy Milk", "Condensed Milk"],
-      "Kitchen Accessories": ["Knife Set", "Cutting Board", "Mixing Bowl", "Spatula", "Pressure Cooker"],
-      "Special Items": ["Dates Premium", "Honey Jar", "Saffron", "Dry Fruits Gift Box", "Special Spice Mix"]
-    };
-
-    let products = [];
-    let imageSerial = 1;
-
-    // Generate products
-    rawCategories.forEach(cat => {
-      if (cat.sub.length > 0 && cat.name === "Meat & Fish") {
-        cat.sub.forEach(subCat => {
-          for (let i = 1; i <= 5; i++) {
-            const names = productNames[subCat] || [`${subCat} Item`];
-            const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
-            products.push({
-              id: imageSerial,
-              title,
-              category: cat.name,
-              subcategory: subCat,
-              price: Math.floor(Math.random() * 1500) + 300,
-              imageTag: `kind${imageSerial}`,
-              imgClass: 'img-meat'
-            });
-            imageSerial++;
-          }
-        });
-      } else if (cat.name === "Cooking Items") {
-        Object.keys(cookingSubCounts).forEach(subCat => {
-          const cnt = cookingSubCounts[subCat];
-          for (let i = 1; i <= cnt; i++) {
-            const names = productNames[subCat] || [`${subCat} Item`];
-            const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
-            products.push({
-              id: imageSerial,
-              title,
-              category: cat.name,
-              subcategory: subCat,
-              price: Math.floor(Math.random() * 1200) + 200,
-              imageTag: `kind${imageSerial}`,
-              imgClass: 'img-cook'
-            });
-            imageSerial++;
-          }
-        });
-      } else {
-        for (let i = 1; i <= cat.count; i++) {
-          const names = productNames[cat.name] || [`${cat.name} Product`];
-          const title = names[(i - 1) % names.length] + (i > names.length ? ` ${i}` : '');
-          let imgClass = 'img-other';
-          if (cat.name === 'Masala') imgClass = 'img-spice';
-          else if (cat.name === 'Drinks') imgClass = 'img-drink';
-          else if (cat.name === 'Snacks' || cat.name === 'Biscuits') imgClass = 'img-snack';
-          else if (cat.name === 'Vegetables') imgClass = 'img-veg';
-          else if (cat.name === 'Dairy Products') imgClass = 'img-dairy';
-          else if (cat.name === 'Sweets') imgClass = 'img-sweet';
-
-          products.push({
-            id: imageSerial,
-            title,
-            category: cat.name,
-            subcategory: '',
-            price: Math.floor(Math.random() * 2000) + 150,
-            imageTag: `kind${imageSerial}`,
-            imgClass
-          });
-          imageSerial++;
-        }
-      }
-    });
+    const products = [
+      {title:"Sunflower oil — 5 Litter",category:"Oils",price:1850},{title:"Sunflower oil — 3 Litter",category:"Oils",price:1350},{title:"Sunflower oil — 1 Litter",category:"Oils",price:450},
+      {title:"ACI সরিষার তেল — 500 গ্রাম",category:"Oils",price:450},{title:"ACI সরিষার তেল — 200 গ্রাম",category:"Oils",price:300},
+      {title:"ঘি — ২০০ গ্রাম",category:"Ghee",price:720},{title:"ঘি — ৪০০ গ্রাম",category:"Ghee",price:1290},
+      {title:"মুসুর ডাল",category:"Lentils & Beans",price:320},{title:"White ছানা",category:"Lentils & Beans",price:420},{title:"Toor dal",category:"Lentils & Beans",price:620},{title:"মুগ ডাল",category:"Lentils & Beans",price:470},{title:"Mix ডাল",category:"Lentils & Beans",price:450},
+      {title:"চাষী",category:"Rice",price:1000,subcategory:"পোলাও চাল"},{title:"চিনিগুড়া",category:"Rice",price:950,subcategory:"পোলাও চাল"},
+      ...[["Essence Rice",4000],["Al-mani premium",3500],["Little India",3690],["Flatten Rice",2650],["XXX SELLA BASMATI RICE",3500],["Keeri Samba",3600],["Guard Basmati",3900]].map(([title,price])=>({title,category:"Rice",subcategory:"বাসমতি · 5kg",price})),
+      {title:"A Grade Rice — ৪ ধরনের চাল",category:"Rice",subcategory:"Japanese Rice · 10 কেজির বস্তা",priceLabel:"¥3,200–¥3,900",price:null,contactOnly:true},{title:"B Grade Rice",category:"Rice",subcategory:"Japanese Rice · ১০ কেজি",price:2800},{title:"C Grade",category:"Rice",subcategory:"Japanese Rice · 10 kg বস্তা",price:2200},
+      {title:"ছুড়ি শুটকি (২০০ গ্রাম)",category:"Dried Fish",price:700},{title:"কাছকি (Kaski)",category:"Dried Fish",price:650},{title:"Chepa শুটকি",category:"Dried Fish",price:650},{title:"লইট্রা শুটকি",category:"Dried Fish",price:690},{title:"চিংড়ি শুটকি",category:"Dried Fish",price:400},{title:"Dry Anchupi",category:"Dried Fish",price:450},{title:"Dry Suri",category:"Dried Fish",price:1296},
+      {title:"রসুন",category:"Vegetables & Seasonings",price:550},{title:"(লাল) পেয়াজ — 1 কেজি",category:"Vegetables & Seasonings",price:250},{title:"(লাল) পেয়াজ — ২০ কেজি",category:"Vegetables & Seasonings",price:2000},
+      {title:"Mago Juice — 2 Litter",category:"Juice",price:600},{title:"Mago Juice — 1 Litter",category:"Juice",price:350},
+      ...[["chicken Whole — 1300 gm",720],["chicken Whole — 1200 gm",670],["chicken Whole — 1000 gm",590],["chicken Whole — 800 gm",490],["Chicken leg 2kg",1750],["Chicken boneless ( Brest)",1350],["Chicken boneless ( Leg)",1500],["Chicken Momo",1000],["Karage 1 kg",900],["Naget (400gm)",550],["Sausage",350],["Chicken kima 400 gm",550]].map(([title,price])=>({title,category:"Chicken",price})),
+      {title:"Goat meat 1 kg",category:"Mutton",price:1350},{title:"Mutton kima 400gm",category:"Mutton",price:1050},
+      ...[["Beef boneless (Dry-Dice cut)",2200],["Beef paya ( Whole)",1750],["Beef BBQ Slice",2390],["Beef Liver",990],["Beef tripe",990],["Beef mince",1150]].map(([title,price])=>({title,category:"Beef",price})),
+      {title:"Deer meet",category:"Deer",price:1250},{title:"কোয়েল (৬ টা)",category:"Quail",price:2200},{title:"ACI Long সেমাই",category:"Semai",price:250},{title:"Laccha সেমাই",category:"Semai",price:270}
+    ].map((p,i)=>({...p,id:i+1,subcategory:p.subcategory||"",imgClass:p.category==="Chicken"||p.category==="Mutton"||p.category==="Beef"?"img-meat":p.category==="Rice"?"img-cook":"img-other",imageTag:`kind${i+1}`}));
 
     // ========== STATE ==========
     let currentFilteredProducts = [...products];
     let currentPage = 1;
     const itemsPerPage = 20;
-    let cart = JSON.parse(localStorage.getItem('sogaCart') || '[]');
+    let cart = JSON.parse(localStorage.getItem('sogaCart-v2') || '[]').filter(item => products.some(p => p.id === item.id && p.price != null));
 
     // ========== RENDER SIDEBAR ==========
     function renderSidebar() {
@@ -637,7 +545,7 @@
             <div class="flex items-center justify-between w-full hover:bg-brand-50 transition group">
               <button onclick="filterCategory('${cat.name}')" class="flex-1 px-4 py-2.5 text-left font-semibold text-slate-800 hover:text-brand-800 flex items-center gap-2">
                 <i class="fa-solid ${cat.icon} text-slate-400 group-hover:text-brand-600 w-4 text-center"></i>
-                <span>${cat.name}</span>
+                <span>${cat.comingSoon ? cat.name + ' — ' + (translations[currentLanguage]?.comingSoon || 'Coming Soon') : cat.name}</span>
                 <span class="text-[10px] text-slate-400 font-normal">(${catCount})</span>
               </button>
               ${hasSub ? `
@@ -711,10 +619,11 @@
       document.getElementById('productCount').innerText = `Showing ${total} items`;
 
       if (total === 0) {
+        const selected = rawCategories.find(c => c.name === activeCategory && c.comingSoon);
         grid.innerHTML = `
           <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-slate-200 shadow-soft">
             <i class="fa-solid fa-basket-shopping text-5xl text-slate-300 mb-4"></i>
-            <p class="text-sm font-bold text-slate-500 mb-4" data-i18n="noProducts">No products match your search or category filter.</p>
+            <p class="text-sm font-bold text-slate-500 mb-4">${selected ? (translations[currentLanguage]?.comingSoon || 'Coming Soon') : (translations[currentLanguage]?.noProducts || 'No products match your search or category filter.')}</p>
             <button onclick="filterCategory('all')" class="mt-2 text-sm bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-2.5 rounded-xl transition">
               View All Products
             </button>
@@ -745,21 +654,19 @@
                 <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">${p.category}</span>
                 <h3 class="font-bold text-slate-800 text-xs sm:text-sm line-clamp-2 mt-0.5 leading-snug">${p.title}</h3>
                 <div class="text-[10px] font-semibold text-slate-400 mt-1 flex items-center gap-1">
-                  <i class="fa-solid fa-circle-check text-emerald-500"></i> In Stock
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i> ${p.contactOnly ? 'Price varies · Contact us' : 'Available'}
                 </div>
               </div>
               <div class="mt-3">
                 <div class="flex items-baseline gap-1 mb-2">
-                  <span class="text-base sm:text-lg font-black text-price">¥${p.price.toLocaleString()}</span>
-                  <span class="text-[10px] text-slate-400">(Tax Incl.)</span>
+                  <span class="text-base sm:text-lg font-black text-price">${p.priceLabel || (p.price == null ? 'Price on request' : '¥' + p.price.toLocaleString())}</span>
+                  
                 </div>
                 <div class="flex gap-1.5">
-                  <button onclick="addToCart(${p.id})" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-cart-plus"></i> Add
-                  </button>
-                  <a href="https://wa.me/819099756585?text=${encodeURIComponent('Hello! I would like to order: ' + p.title + ' (¥' + p.price + ')')}" target="_blank"
-                     class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-2 rounded-lg transition flex items-center justify-center" title="WhatsApp Order">
-                    <i class="fa-brands fa-whatsapp"></i>
+                  ${p.contactOnly ? '<a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#1877F2] text-white text-xs font-bold py-2 rounded-lg text-center">Ask price</a>' : `<button onclick="addToCart(${p.id})" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1"><i class="fa-solid fa-cart-plus"></i> Add</button>`}
+                  <a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer"
+                     class="bg-[#1877F2] hover:bg-[#166FE5] text-white px-2.5 py-2 rounded-lg transition flex items-center justify-center" title="Visit our Facebook">
+                    <i class="fa-brands fa-facebook"></i>
                   </a>
                 </div>
               </div>
@@ -811,6 +718,7 @@
 
     // ========== FILTERING ==========
     function filterCategory(catName) {
+      activeCategory = catName;
       currentPage = 1;
       document.getElementById('breadcrumbActive').innerText = catName === 'all' ? 'All Products' : catName;
       document.getElementById('sectionTitle').innerText = catName === 'all' ? 'All Products Catalog' : catName;
@@ -871,7 +779,7 @@
 
     // ========== CART ==========
     function saveCart() {
-      localStorage.setItem('sogaCart', JSON.stringify(cart));
+      localStorage.setItem('sogaCart-v2', JSON.stringify(cart));
       updateCartUI();
     }
 
@@ -963,18 +871,12 @@
       document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
     }
 
-    function checkoutWhatsApp() {
+    function checkoutFacebook() {
       if (cart.length === 0) {
         showToast('Cart is empty');
         return;
       }
-      let message = 'Hello Soga Halal Mart! I would like to order:\n\n';
-      cart.forEach(item => {
-        message += `• ${item.title} × ${item.qty} = ¥${(item.price * item.qty).toLocaleString()}\n`;
-      });
-      const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-      message += `\nTotal: ¥${total.toLocaleString()}\n\nPlease confirm availability. Thank you!`;
-      window.open(`https://wa.me/819099756585?text=${encodeURIComponent(message)}`, '_blank');
+      window.open('https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP', '_blank', 'noopener,noreferrer');
     }
 
     // ========== PRODUCT MODAL ==========
@@ -983,32 +885,10 @@
       if (!p) return;
       const body = document.getElementById('modalBody');
       body.innerHTML = `
-        <div class="flex justify-between items-start mb-4">
-          <div>
-            <span class="text-xs font-bold text-emerald-600 uppercase">${p.category}${p.subcategory ? ' › ' + p.subcategory : ''}</span>
-            <h2 class="text-xl font-black text-slate-900 mt-1">${p.title}</h2>
-          </div>
-          <button onclick="closeProductModal()" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center">
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-        </div>
+        <div class="flex justify-between items-start mb-4"><div><span class="text-xs font-bold text-emerald-600 uppercase">${p.category}${p.subcategory ? ' › ' + p.subcategory : ''}</span><h2 class="text-xl font-black text-slate-900 mt-1">${p.title}</h2></div><button onclick="closeProductModal()" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button></div>
         <div class="w-full h-48 rounded-xl ${p.imgClass} blank-img mb-5 text-lg">${p.title}</div>
-        <div class="flex items-baseline gap-2 mb-4">
-          <span class="text-3xl font-black text-price">¥${p.price.toLocaleString()}</span>
-          <span class="text-sm text-slate-400">(Tax Included)</span>
-        </div>
-        <div class="flex items-center gap-2 text-sm text-emerald-600 font-semibold mb-6">
-          <i class="fa-solid fa-circle-check"></i> In Stock • Ready for delivery
-        </div>
-        <div class="flex gap-3">
-          <button onclick="addToCart(${p.id}); closeProductModal();" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cart-plus"></i> Add to Cart
-          </button>
-          <a href="https://wa.me/819099756585?text=${encodeURIComponent('Hello! I would like to order: ' + p.title + ' (¥' + p.price + ')')}" target="_blank"
-             class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-3 rounded-xl transition flex items-center justify-center gap-2 font-bold">
-            <i class="fa-brands fa-whatsapp text-xl"></i> Order
-          </a>
-        </div>`;
+        <div class="text-3xl font-black text-price mb-4">${p.priceLabel || '¥' + p.price.toLocaleString()}</div>
+        <div class="flex gap-3">${p.contactOnly ? '<a href="https://www.facebook.com/people/Soga-Halal-Mart/61595074297951/?locale=ja_JP" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#1877F2] text-white text-center font-bold py-3 rounded-xl">Contact to confirm type and price</a>' : `<button onclick="addToCart(${p.id}); closeProductModal();" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl">Add to Cart</button>`}</div>`;
       document.getElementById('productModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1034,13 +914,13 @@
     // ========== TRANSLATIONS ==========
     const translations = {
       en: {
-        freeDeliveryTag: "Free Delivery",
-        freeDeliveryText: "Orders ¥8,500+ for free delivery all over Japan!",
+        freeDeliveryTag: "Delivery",
+        freeDeliveryText: "Orders ¥8,500+ for delivery all over Japan!",
         logoSub: "Japan's Trusted Online Grocery",
         searchPlaceholder: "Search products...",
         searchBtn: "Search",
         supportLabel: "Direct Support",
-        whatsappBtn: "WhatsApp Order",
+        facebookBtn: "Visit our Facebook",
         allCategories: "ALL CATEGORIES",
         navHome: "Home",
         navLocation: "Store Location",
@@ -1048,34 +928,34 @@
         catalogLink: "Catalog",
         heroBadge: "100% Halal Certified • Cold Chain Delivery",
         heroTitle: "Premium Halal Groceries Delivered to Your Door",
-        heroDesc: "Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy free delivery across Japan on orders over ¥8,500.",
+        heroDesc: "Fresh meat, spices, rice, dairy & household essentials. Order online and enjoy delivery across Japan on orders over ¥8,500.",
         heroCta: "Shop Now",
         feature1Title: "Nationwide Delivery",
         feature1Desc: "Cold-chain shipping",
         feature2Title: "Farm-Fresh Quality",
         feature2Desc: "Premium Halal ingredients",
         feature3Title: "Direct Support",
-        feature3Desc: "WhatsApp & Phone",
-        footerDesc: "Your trusted online Halal grocery shop in Chiba, Japan. Delivering farm-fresh meat, rice, spices, and daily household items nationwide with cold-chain shipping.",
+        feature3Desc: "Facebook & Phone",
+        footerDesc: "Your trusted Halal grocery shop in Chiba, Japan. Browse our listed products and contact us on Facebook for availability.",
         storeAddressTitle: "Store Address & Map",
         openMap: "Open in Google Maps",
         supportTitle: "Direct Customer Support",
         cartTitle: "Your Cart",
         cartTotal: "Total",
         cartTaxNote: "Prices include tax. Free delivery on orders ¥8,500+",
-        checkoutBtn: "Order via WhatsApp",
+        checkoutBtn: "Contact us on Facebook",
         clearCart: "Clear Cart",
         emptyCart: "Your cart is empty",
-        noProducts: "No products match your search or category filter."
+        noProducts: "No products match your search or category filter.", comingSoon: "Coming Soon"
       },
       ja: {
-        freeDeliveryTag: "送料無料",
-        freeDeliveryText: "8,500円以上のご注文で日本全国送料無料！",
+        freeDeliveryTag: "配送",
+        freeDeliveryText: "8,500円以上のご注文で日本全国配送！",
         logoSub: "日本で信頼されるハラール専門店",
         searchPlaceholder: "商品を検索...",
         searchBtn: "検索",
         supportLabel: "サポート",
-        whatsappBtn: "WhatsApp注文",
+        facebookBtn: "Facebookページを見る",
         allCategories: "すべてのカテゴリー",
         navHome: "ホーム",
         navLocation: "店舗情報・住所",
@@ -1083,25 +963,25 @@
         catalogLink: "カタログ",
         heroBadge: "100%ハラール認証 • コールドチェーン配送",
         heroTitle: "プレミアムハラール食材を玄関までお届け",
-        heroDesc: "新鮮な肉、スパイス、米、乳製品、日用品。オンライン注文で8,500円以上は日本全国送料無料。",
+        heroDesc: "新鮮な肉、スパイス、米、乳製品、日用品。オンライン注文で8,500円以上は日本全国配送。",
         heroCta: "今すぐ購入",
         feature1Title: "全国配送",
         feature1Desc: "コールドチェーン配送",
         feature2Title: "新鮮な品質",
         feature2Desc: "プレミアムハラール食材",
         feature3Title: "直接サポート",
-        feature3Desc: "WhatsApp & 電話",
+        feature3Desc: "Facebook & 電話",
         footerDesc: "千葉県の信頼できるオンラインハラール食料品店。新鮮な肉、米、スパイス、日用品を全国にコールドチェーン配送でお届けします。",
         storeAddressTitle: "店舗住所 & 地図",
         openMap: "Googleマップで開く",
         supportTitle: "お客様サポート",
         cartTitle: "カート",
         cartTotal: "合計",
-        cartTaxNote: "税込価格。8,500円以上で送料無料",
-        checkoutBtn: "WhatsAppで注文",
+        cartTaxNote: "税込価格。8,500円以上で配送",
+        checkoutBtn: "Facebookでお問い合わせ",
         clearCart: "カートを空にする",
         emptyCart: "カートは空です",
-        noProducts: "条件に一致する商品がありません。"
+        noProducts: "条件に一致する商品がありません。", comingSoon: "近日発売"
       },
       bn: {
         freeDeliveryTag: "ফ্রি ডেলিভারি",
@@ -1110,7 +990,7 @@
         searchPlaceholder: "পণ্য খুঁজুন...",
         searchBtn: "খুঁজুন",
         supportLabel: "সরাসরি সাপোর্ট",
-        whatsappBtn: "হোয়াটসঅ্যাপ অর্ডার",
+        facebookBtn: "আমাদের Facebook পেজ দেখুন",
         allCategories: "সকল ক্যাটাগরি",
         navHome: "হোম",
         navLocation: "লোকেশন ও ঠিকানা",
@@ -1125,7 +1005,7 @@
         feature2Title: "খামার-তাজা মান",
         feature2Desc: "প্রিমিয়াম হালাল উপকরণ",
         feature3Title: "সরাসরি সাপোর্ট",
-        feature3Desc: "হোয়াটসঅ্যাপ ও ফোন",
+        feature3Desc: "Facebook ও ফোন",
         footerDesc: "চিবা, জাপানের বিশ্বস্ত অনলাইন হালাল গ্রোসারি শপ। তাজা মাংস, চাল, মসলা এবং দৈনন্দিন পণ্য কোল্ড-চেইন শিপিং সহ সারাদেশে পৌঁছে দিচ্ছি।",
         storeAddressTitle: "দোকানের ঠিকানা ও মানচিত্র",
         openMap: "গুগল ম্যাপে খুলুন",
@@ -1133,14 +1013,17 @@
         cartTitle: "আপনার কার্ট",
         cartTotal: "মোট",
         cartTaxNote: "মূল্যে ট্যাক্স অন্তর্ভুক্ত। ৮,৫০০+ অর্ডারে ফ্রি ডেলিভারি",
-        checkoutBtn: "হোয়াটসঅ্যাপে অর্ডার করুন",
+        checkoutBtn: "Facebook-এ অর্ডার করুন",
         clearCart: "কার্ট খালি করুন",
         emptyCart: "আপনার কার্ট খালি",
-        noProducts: "আপনার অনুসন্ধান বা ফিল্টারের সাথে মিলে এমন কোনো পণ্য নেই।"
+        noProducts: "আপনার অনুসন্ধান বা ফিল্টারের সাথে মিলে এমন কোনো পণ্য নেই।", comingSoon: "শীঘ্রই আসছে"
       }
     };
 
+    let currentLanguage = 'en';
+    let activeCategory = 'all';
     function setLanguage(lang) {
+      currentLanguage = lang;
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('bg-white/30'));
       document.getElementById('btn-' + lang).classList.add('bg-white/30');
 
@@ -1155,6 +1038,26 @@
     }
 
     // ========== INIT ==========
+    // Automatically rotate the three supplied shop photos; pause while visitors interact.
+    (() => {
+      const hero = document.getElementById('shopHero');
+      const slides = [...hero.querySelectorAll('.hero-slide')];
+      const dots = [...hero.querySelectorAll('.hero-dot')];
+      let activeSlide = 0;
+      let timer;
+      const showSlide = index => {
+        activeSlide = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === activeSlide));
+        dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === activeSlide)));
+      };
+      const start = () => {
+        clearInterval(timer);
+        timer = setInterval(() => showSlide(activeSlide + 1), 5000);
+      };
+      dots.forEach(dot => dot.addEventListener('click', () => { showSlide(Number(dot.dataset.slide)); start(); }));
+      start();
+    })();
+
     renderSidebar();
     renderProductsGrid();
     updateCartUI();
